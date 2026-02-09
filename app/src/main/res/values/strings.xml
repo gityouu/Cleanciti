@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Cleanciti</string>
+    <dimen name="button_radius">8dp</dimen>
+    <string name="login">Log In</string>
+    <string name="signup">Sign Up</string>
+    <string name="logo">logo</string>
+    <string name="CleanCitiGH">CleanCiti GH</string>
+    <string name="Reportwasteissues">Report waste issues</string>
 </resources>
