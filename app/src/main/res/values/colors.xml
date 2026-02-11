@@ -8,4 +8,5 @@
     <color name="inputBgColor1">#1c261e</color>
     <color name="inputBgColor2">#13ec49</color>
     <color name="borderColor">#2a362d</color>
+    <color name="bg">#102115</color>
 </resources>
