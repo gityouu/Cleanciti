@@ -9,13 +9,20 @@
     <string name="cleanciti">CleanCiti</string>
     <string name="environmental_management">Environmental Management</string>
     <string name="field_worker_login">Field Worker Login</string>
-    <string name="employee_id">EMPLOYEE ID</string>
+    <string name="employee_id">Team ID</string>
     <string name="password">PASSWORD</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="outdoor_accessibility">OUTDOOR ACCESSIBILITY</string>
     <string name="high_contrast_mode">High Contrast Mode</string>
-    <string name="enter_your_id">Enter your ID</string>
+    <string name="enter_your_id">Enter ID</string>
     <string name="loginn">Login</string>
     <string name="passwordPlaceholder">••••••••</string>
     <string name="trash_pickup_image">trash_pickup_image</string>
+    <string name="name_example_com">name@example.com</string>
+    <string name="sign_in">Sign In</string>
+    <string name="email_address">EMAIL ADDRESS</string>
+    <string name="or">OR</string>
+    <string name="report_anonymously">Report Anonymously</string>
+    <string name="remember_me">Remember me</string>
+    <string name="login_to_account">Login to Account</string>
 </resources>

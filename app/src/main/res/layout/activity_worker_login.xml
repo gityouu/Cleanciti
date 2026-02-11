@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="35dp"
         android:layout_marginBottom="48dp"
         android:gravity="center"
@@ -57,7 +57,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/card_surface"
         android:orientation="vertical"
         android:padding="24dp"
@@ -77,12 +77,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/employee_id"
             android:textColor="#94a3b8"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:layout_marginStart="4dp"
-            android:layout_marginBottom="8dp"/>
+            android:textStyle="bold" />
 
         <EditText
             android:layout_width="match_parent"
@@ -98,14 +98,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="8dp"
             android:importantForAutofill="no"
             android:text="@string/password"
             android:textColor="#94a3b8"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="8dp"/>
+            android:textStyle="bold" />
 
         <EditText
             android:layout_width="match_parent"
