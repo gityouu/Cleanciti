@@ -4,4 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="login_btn_color">#4CAF50</color>
     <color name="logout_btn_color">#334CAF50</color>
+    <color name="inputBgColor">#102115</color>
+    <color name="inputBgColor1">#1c261e</color>
+    <color name="inputBgColor2">#13ec49</color>
+    <color name="borderColor">#2a362d</color>
 </resources>

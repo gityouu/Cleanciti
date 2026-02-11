@@ -6,4 +6,16 @@
     <string name="logo">logo</string>
     <string name="CleanCitiGH">CleanCiti GH</string>
     <string name="Reportwasteissues">Report waste issues</string>
+    <string name="cleanciti">CleanCiti</string>
+    <string name="environmental_management">Environmental Management</string>
+    <string name="field_worker_login">Field Worker Login</string>
+    <string name="employee_id">EMPLOYEE ID</string>
+    <string name="password">PASSWORD</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="outdoor_accessibility">OUTDOOR ACCESSIBILITY</string>
+    <string name="high_contrast_mode">High Contrast Mode</string>
+    <string name="enter_your_id">Enter your ID</string>
+    <string name="loginn">Login</string>
+    <string name="passwordPlaceholder">••••••••</string>
+    <string name="trash_pickup_image">trash_pickup_image</string>
 </resources>
