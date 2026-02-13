@@ -30,4 +30,5 @@
     <string name="profile">Profile</string>
     <string name="sign_up">Sign Up</string>
     <string name="have_an_account">Have an account?</string>
+    <string name="a_field_worker">A field worker?</string>
 </resources>
