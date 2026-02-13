@@ -6,9 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.cleanciti"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.clean_citi_gh.cleancitigh"
