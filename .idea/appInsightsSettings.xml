@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.clean_citi_gh.cleancitigh" />
+                  <option name="mobileSdkAppId" value="1:413812061582:android:6e16cd554bb061eb1ee0df" />
+                  <option name="projectId" value="clean-citi-gh" />
+                  <option name="projectNumber" value="413812061582" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
