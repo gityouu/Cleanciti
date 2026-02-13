@@ -25,4 +25,9 @@
     <string name="report_anonymously">Report Anonymously</string>
     <string name="remember_me">Remember me</string>
     <string name="login_to_account">Login to Account</string>
+    <string name="home">Home</string>
+    <string name="reports">Reports</string>
+    <string name="profile">Profile</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="have_an_account">Have an account?</string>
 </resources>
