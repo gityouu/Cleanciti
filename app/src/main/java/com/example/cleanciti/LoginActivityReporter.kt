@@ -51,6 +51,8 @@ class LoginActivityReporter : BaseActivity() {
             val password = passwordField.text.toString().trim()
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
+                loginButton.isEnabled = false
+                loginButton.text = "Logging in..."
                 performLogin(email, password)
             } else {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()

@@ -37,6 +37,8 @@ class LoginActivityWorker : BaseActivity() {
 
             if (inputId.isNotEmpty() && inputPassword.isNotEmpty()) {
                 val formattedId = if (inputId.startsWith("CC-")) inputId.substring(3) else inputId
+                loginButton.isEnabled = false
+                loginButton.text = "Logging in..."
                 performWorkerLogin(formattedId, inputPassword)
             } else {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()

@@ -130,7 +130,7 @@
             app:backgroundTint="@null"
             android:text="@string/loginn"
             android:textAllCaps="false"
-            android:textColor="#ffffff"
+            android:textColor="#000"
             android:textSize="15sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

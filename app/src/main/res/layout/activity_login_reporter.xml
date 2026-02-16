@@ -166,7 +166,7 @@
             app:backgroundTint="@null"
             android:text="@string/login_to_account"
             android:textAllCaps="false"
-            android:textColor="#ffffff"
+            android:textColor="#000"
             android:textSize="15sp" />
 
         <LinearLayout
