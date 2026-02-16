@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
@@ -23,8 +24,8 @@ class SignupActivityReporter : BaseActivity() {
         val emailField = findViewById<EditText>(R.id.signUpEmail)
         val passwordField = findViewById<EditText>(R.id.signUpPassword)
         val signupButton = findViewById<Button>(R.id.signupButton)
-        val fieldWorkerLink = findViewById<Button>(R.id.fieldWorker)
-        val haveAnAccount = findViewById<Button>(R.id.haveAnAccount)
+        val fieldWorkerLink = findViewById<TextView>(R.id.fieldWorker)
+        val haveAnAccount = findViewById<TextView>(R.id.haveAnAccount)
 
         fieldWorkerLink.setOnClickListener {
             val intent = Intent(this, LoginActivityWorker::class.java)

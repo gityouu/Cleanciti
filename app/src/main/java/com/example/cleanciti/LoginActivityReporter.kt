@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
@@ -23,8 +24,10 @@ class LoginActivityReporter : BaseActivity() {
         val emailField = findViewById<EditText>(R.id.loginEmail)
         val passwordField = findViewById<EditText>(R.id.loginPassword)
         val loginButton = findViewById<Button>(R.id.reporterLoginButton)
-        val anonymousText = findViewById<Button>(R.id.reportAnonymously)
-        val forgotPassword = findViewById<Button>(R.id.forgotPassword)
+        val anonymousText = findViewById<TextView>(R.id.reportAnonymously)
+        val forgotPassword = findViewById<TextView>(R.id.forgotPassword)
+        val fieldWorker = findViewById<TextView>(R.id.fieldWorker)
+
 
         forgotPassword.setOnClickListener {
             val email = emailField.text.toString().trim()
@@ -56,6 +59,11 @@ class LoginActivityReporter : BaseActivity() {
 
         anonymousText.setOnClickListener {
             loginUserAnonymously()
+        }
+
+        fieldWorker.setOnClickListener {
+            val intent = Intent(this, LoginActivityWorker::class.java)
+            startActivity(intent)
         }
     }
 
