@@ -31,4 +31,11 @@
     <string name="sign_up">Sign Up</string>
     <string name="have_an_account">Have an account?</string>
     <string name="a_field_worker">A field worker?</string>
+    <string name="add_photo">Add Photo</string>
+    <string name="category">Category</string>
+    <string name="description">Description</string>
+    <string name="new_waste_report">New Waste Report</string>
+    <string name="describe_the_issue">Describe the issue...</string>
+    <string name="submit_report">Submit Report</string>
+    <string name="uploadimage">uploadImage</string>
 </resources>

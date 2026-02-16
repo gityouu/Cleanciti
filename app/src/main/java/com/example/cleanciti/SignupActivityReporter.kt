@@ -44,6 +44,7 @@ class SignupActivityReporter : BaseActivity() {
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 if (password.length >= 6) {
                     signupButton.isEnabled = false
+                    signupButton.text = "Signing up..."
                     registerUser(email, password)
                 } else {
                     Toast.makeText(this, "Password must be at least 6 characters long", Toast.LENGTH_SHORT).show()
@@ -74,7 +75,7 @@ class SignupActivityReporter : BaseActivity() {
         val user = hashMapOf(
             "email" to email,
             "role" to "reporter",
-            "createdAt" to System.currentTimeMillis()
+            "createdAt" to com.google.firebase.Timestamp.now()
         )
 
         db.collection("users").document(uid)
