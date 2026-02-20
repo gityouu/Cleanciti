@@ -136,8 +136,11 @@ class HomeFragment : Fragment() {
 
     private fun encodeImageToBase64(bitmap: Bitmap): String {
         val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, outputStream)
+        val byteArray = outputStream.toByteArray()
+        val rawBase64 = Base64.encodeToString(byteArray, Base64.DEFAULT)
+
+        return "data:image/jpeg;base64,$rawBase64"
     }
 
     override fun onDestroyView() {
