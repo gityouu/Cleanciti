@@ -15,17 +15,28 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.BundleCompat
 import androidx.fragment.app.Fragment
 import com.example.cleanciti.databinding.FragmentHomeBinding
+import com.google.android.gms.location.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.io.ByteArrayOutputStream
 
 class HomeFragment : Fragment() {
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var currentLatitude: Double? = null
+    private var currentLongitude: Double? = null
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-
     private var bse64Image: String? = null
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
+
+    private val requestLocationPermission = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        if (permissions[android.Manifest.permission.ACCESS_FINE_LOCATION] == true) {
+            getLocation()
+        }
+    }
 
     private val cameraLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -56,6 +67,13 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        requestLocationPermission.launch(arrayOf(
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION
+        ))
 
         setupSpinner()
         setupClickListeners()
@@ -108,6 +126,10 @@ class HomeFragment : Fragment() {
                 "description" to desc,
                 "status" to "New",
                 "photoURL" to bse64Image,
+                "location" to hashMapOf(
+                    "lat" to currentLatitude,
+                    "lng" to currentLongitude
+                ),
                 "createdAt" to com.google.firebase.Timestamp.now()
             )
 
@@ -122,6 +144,17 @@ class HomeFragment : Fragment() {
             binding.submitReportBtn.isEnabled = true
             binding.submitReportBtn.text = "Submit Report"
             Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun getLocation() {
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            if (location != null) {
+                currentLatitude = location.latitude
+                currentLongitude = location.longitude
+
+                binding.locationText.text = "Accra, GH • ${String.format("%.4f", location.latitude)}, ${String.format("%.4f", location.longitude)}"
+            }
         }
     }
 
