@@ -3,6 +3,7 @@ package com.example.cleanciti
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Bitmap
+import android.location.Geocoder
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
@@ -19,6 +20,7 @@ import com.google.android.gms.location.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.io.ByteArrayOutputStream
+import java.util.Locale
 
 class HomeFragment : Fragment() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -126,6 +128,7 @@ class HomeFragment : Fragment() {
                 "description" to desc,
                 "status" to "New",
                 "photoURL" to bse64Image,
+                "locationName" to binding.locationText.text.toString(), // "Accra, Greater Accra"
                 "location" to hashMapOf(
                     "lat" to currentLatitude,
                     "lng" to currentLongitude
@@ -153,8 +156,27 @@ class HomeFragment : Fragment() {
                 currentLatitude = location.latitude
                 currentLongitude = location.longitude
 
-                binding.locationText.text = "Accra, GH • ${String.format("%.4f", location.latitude)}, ${String.format("%.4f", location.longitude)}"
+                updateLocationBanner(location.latitude, location.longitude)
             }
+        }
+    }
+
+    private fun updateLocationBanner(lat: Double, lng: Double) {
+        try {
+            val geocoder = Geocoder(requireContext(), Locale.getDefault())
+            val addresses = geocoder.getFromLocation(lat, lng, 1)
+
+            if (addresses != null && addresses.isNotEmpty()) {
+                val address = addresses[0]
+
+                val city = address.locality ?: address.subAdminArea ?: "Unknown Location"
+
+                binding.locationText.text = city
+            } else {
+                binding.locationText.text = "Location available"
+            }
+        } catch (e: Exception) {
+            binding.locationText.text = "GPS Active"
         }
     }
 

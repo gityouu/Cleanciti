@@ -38,4 +38,6 @@
     <string name="describe_the_issue">Describe the issue...</string>
     <string name="submit_report">Submit Report</string>
     <string name="uploadimage">uploadImage</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

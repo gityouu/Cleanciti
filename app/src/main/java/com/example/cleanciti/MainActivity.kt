@@ -22,7 +22,7 @@ class MainActivity : BaseActivity() {
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        // Link of BottomNavigationView to the NavController
+        // Link the BottomNavigationView to the NavController
         binding.bottomNavigation.setupWithNavController(navController)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
