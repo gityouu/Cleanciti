@@ -11,9 +11,10 @@
         android:label="Home"
         tools:layout="@layout/fragment_home" />
 
-<!--    <fragment-->
-<!--        android:id="@+id/nav_report"-->
-<!--        android:name="com.yourapp.ReportsFragment"-->
-<!--        android:label="Reports" />-->
+    <fragment
+        android:id="@+id/nav_report"
+        android:name="com.example.cleanciti.ReportsFragment"
+        android:label="Reports"
+        tools:layout="@layout/fragment_reports" />"/>
 
 </navigation>
