@@ -63,11 +63,15 @@ class LoginActivityWorker : BaseActivity() {
 
                 val team = documents.documents[0]
                 val teamName = team.getString("assignedTeam")
+                val teamId = team.getString("assignedTeamId")
                 val expectedPass = teamPasswords[teamName]
+                val intent = Intent(this, MainActivity::class.java)
 
                 if (inputPass == expectedPass) {
                     Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainActivity::class.java))
+                    intent.putExtra("USER_ROLE", "worker")
+                    intent.putExtra("TEAM_ID", teamId) // Pass the CC-#### login ID
+                    startActivity(intent)
                     finish()
                 } else {
                     resetLoginButton()

@@ -15,6 +15,6 @@
         android:id="@+id/nav_report"
         android:name="com.example.cleanciti.ReportsFragment"
         android:label="Reports"
-        tools:layout="@layout/fragment_reports" />"/>
+        tools:layout="@layout/fragment_reports" />
 
 </navigation>
