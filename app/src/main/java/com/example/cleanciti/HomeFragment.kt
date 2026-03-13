@@ -16,7 +16,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.BundleCompat
 import androidx.fragment.app.Fragment
 import com.example.cleanciti.databinding.FragmentHomeBinding
-import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.io.ByteArrayOutputStream
@@ -109,12 +110,32 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun getAssignedTeamMunicipality(lat: Double?, lng: Double?): String {
+        if (lat == null || lng == null) return "UNASSIGNED_OR_GENERAL_ADMIN"
+
+        return when {
+            // Ga Central (Team A) boundaries
+            (lat in 5.58..5.65) && (lng in -0.32..-0.25) -> "GA_CENTRAL_001"
+
+            // Ga North (Team B) boundaries
+            (lat in 5.66..5.75) && (lng in -0.35..-0.28) -> "GA_NORTH_001"
+
+            // Ga West (Team C) boundaries
+            (lat in 5.70..5.85) && (lng in -0.45..-0.36) -> "GA_WEST_001"
+
+            else -> "UNASSIGNED_OR_GENERAL_ADMIN"
+        }
+    }
+
     private fun submitReport(userId: String, category: String, desc: String) {
         binding.submitReportBtn.isEnabled = false
         binding.submitReportBtn.text = "Submitting..."
 
         val metadataRef = db.collection("metadata").document("reports_stats")
         val reportsRef = db.collection("reports").document()
+
+        // Calculate the team ID before the transaction
+        val teamMunicipality = getAssignedTeamMunicipality(currentLatitude, currentLongitude)
 
         db.runTransaction { transaction ->
             val snapshot = transaction.get(metadataRef)
@@ -129,6 +150,7 @@ class HomeFragment : Fragment() {
                 "status" to "New",
                 "photoURL" to bse64Image,
                 "locationName" to binding.locationText.text.toString(), // "Accra, Greater Accra"
+                "assignedTeamMunicipality" to teamMunicipality,
                 "location" to hashMapOf(
                     "lat" to currentLatitude,
                     "lng" to currentLongitude
@@ -139,9 +161,15 @@ class HomeFragment : Fragment() {
             transaction.set(reportsRef, reportData)
             transaction.set(metadataRef, hashMapOf("last_report_number" to nextNum))
 
-            "CC-$nextNum"
+            nextNum
         }.addOnSuccessListener { _ ->
-            Toast.makeText(requireContext(), "Report Submitted!", Toast.LENGTH_SHORT).show()
+            val zoneName = when(teamMunicipality) {
+                "GA_CENTRAL_001" -> "Ga Central"
+                "GA_NORTH_001" -> "Ga North"
+                "GA_WEST_001" -> "Ga West"
+                else -> "General Admin"
+            }
+            Toast.makeText(requireContext(), "Report sent to $zoneName Team!", Toast.LENGTH_LONG).show()
             resetUI()
         }.addOnFailureListener { e ->
             binding.submitReportBtn.isEnabled = true

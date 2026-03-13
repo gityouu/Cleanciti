@@ -25,6 +25,7 @@
         <ImageView
             android:layout_width="14dp"
             android:layout_height="14dp"
+            android:contentDescription="@string/location_icon"
             android:src="@drawable/ic_location"
             app:tint="#13ec49" />
 
@@ -33,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:text="Locating..."
+            android:text="@string/locating"
             android:textColor="#94a3b8"
             android:textSize="12sp" />
     </LinearLayout>
@@ -101,6 +102,7 @@
                     android:id="@+id/photoPreview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:contentDescription="@string/upload"
                     android:scaleType="centerCrop"
                     android:visibility="gone" />
             </FrameLayout>
