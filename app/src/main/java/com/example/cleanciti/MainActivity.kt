@@ -19,17 +19,17 @@ class MainActivity : BaseActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 1. Check if we arrived here from the Worker Login
+        // Check if we arrived here from the Worker Login
         val role = intent.getStringExtra("USER_ROLE")
 
         if (role == "worker") {
             // User is a Worker, load Worker View
-            setupNavigation(R.navigation.nav_graph_worker, R.menu.bottom_nav_menu_worker)
+            configureNavigation(R.navigation.nav_graph_worker, R.menu.bottom_nav_menu_worker)
         } else {
-            // 2. Fallback: Check Firebase Auth for Reporters
+            // Fallback: Check Firebase Auth for Reporters
             val user = auth.currentUser
             if (user != null) {
-                setupNavigation(R.navigation.nav_graph, R.menu.bottom_nav_menu)
+                configureNavigation(R.navigation.nav_graph, R.menu.bottom_nav_menu)
             }
         }
 
@@ -40,16 +40,31 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun setupNavigation(graphId: Int, menuId: Int) {
+    // MainActivity.kt
+    private fun configureNavigation(graphId: Int, menuId: Int) {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        // Swap the graph and menu dynamically
-        navController.setGraph(graphId)
-        binding.bottomNavigation.menu.clear()
-        binding.bottomNavigation.inflateMenu(menuId)
-        binding.bottomNavigation.setupWithNavController(navController)
-        binding.bottomNavigation.visibility = View.VISIBLE
+        // Capture the login ID passed from LoginActivityWorker
+        val teamId = intent.getStringExtra("TEAM_ID")
+
+        if (graphId == R.navigation.nav_graph_worker && teamId != null) {
+            // Create a bundle to pass the TEAM_ID as an argument to the start destination
+            val bundle = Bundle().apply {
+                putString("TEAM_ID", teamId)
+            }
+            // Set the graph with the arguments included
+            navController.setGraph(graphId, bundle)
+        } else {
+            navController.setGraph(graphId)
+        }
+
+        binding.bottomNavigation.apply {
+            menu.clear()
+            inflateMenu(menuId)
+            setupWithNavController(navController)
+            visibility = View.VISIBLE
+        }
     }
 }

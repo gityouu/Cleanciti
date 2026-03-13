@@ -38,17 +38,15 @@
     <string name="describe_the_issue">Describe the issue...</string>
     <string name="submit_report">Submit Report</string>
     <string name="uploadimage">uploadImage</string>
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="locating">Locating...</string>
     <string name="upload">upload</string>
     <string name="location_icon">location_icon</string>
     <string name="operational_stats">Operational Stats</string>
     <string name="ga_central_municipality">Ga Central Municipality</string>
     <string name="hello_team_a">Hello, Team A</string>
-    <string name="_12">12</string>
+    <string name="_12">00</string>
     <string name="new_reports">New Reports</string>
-    <string name="_05">05</string>
+    <string name="_05">00</string>
     <string name="in_progress">In Progress</string>
     <string name="recent_activity">Recent Activity</string>
     <string name="hello">Hello, %1$s</string>
