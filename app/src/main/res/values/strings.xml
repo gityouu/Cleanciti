@@ -49,5 +49,9 @@
     <string name="_05">00</string>
     <string name="collected">Collected</string>
     <string name="recent_activity">Recent Activity</string>
+    <string name="submit_reportt">Submit Report</string>
+    <string name="submitting">Submitting...</string>
+    <string name="gps_active">GPS Active</string>
+    <string name="location_available">Location available</string>
     <string name="hello">Hello, %1$s</string>
 </resources>
