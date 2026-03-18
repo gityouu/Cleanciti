@@ -129,10 +129,11 @@ class HomeFragment : Fragment() {
 
     private fun submitReport(userId: String, category: String, desc: String) {
         binding.submitReportBtn.isEnabled = false
-        binding.submitReportBtn.text = "Submitting..."
+        binding.submitReportBtn.text = getString(R.string.submitting)
 
         val metadataRef = db.collection("metadata").document("reports_stats")
         val reportsRef = db.collection("reports").document()
+        val notificationRef = db.collection("notifications").document()
 
         // Calculate the team ID before the transaction
         val teamMunicipality = getAssignedTeamMunicipality(currentLatitude, currentLongitude)
@@ -159,21 +160,25 @@ class HomeFragment : Fragment() {
             )
 
             transaction.set(reportsRef, reportData)
+
+            val notificationData = hashMapOf(
+                "title" to "New $category Report",
+                "message" to "Report #$nextNum: $desc",
+                "targetMunicipalityId" to teamMunicipality, // Routes to Team A, B, or C
+                "timestamp" to com.google.firebase.Timestamp.now(),
+                "isRead" to false
+            )
+            transaction.set(notificationRef, notificationData)
+
             transaction.set(metadataRef, hashMapOf("last_report_number" to nextNum))
 
             nextNum
         }.addOnSuccessListener { _ ->
-            val zoneName = when(teamMunicipality) {
-                "GA_CENTRAL_001" -> "Ga Central"
-                "GA_NORTH_001" -> "Ga North"
-                "GA_WEST_001" -> "Ga West"
-                else -> "General Admin"
-            }
-            Toast.makeText(requireContext(), "Report sent to $zoneName Team!", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Report sent!", Toast.LENGTH_LONG).show()
             resetUI()
         }.addOnFailureListener { e ->
             binding.submitReportBtn.isEnabled = true
-            binding.submitReportBtn.text = "Submit Report"
+            binding.submitReportBtn.text = getString(R.string.submit_reportt)
             Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
@@ -201,10 +206,10 @@ class HomeFragment : Fragment() {
 
                 binding.locationText.text = city
             } else {
-                binding.locationText.text = "Location available"
+                binding.locationText.text = getString(R.string.location_available)
             }
-        } catch (e: Exception) {
-            binding.locationText.text = "GPS Active"
+        } catch (_: Exception) {
+            binding.locationText.text = getString(R.string.gps_active)
         }
     }
 
@@ -213,7 +218,7 @@ class HomeFragment : Fragment() {
         binding.photoPreview.visibility = View.GONE
         binding.placeholderLayout.visibility = View.VISIBLE
         binding.submitReportBtn.isEnabled = true
-        binding.submitReportBtn.text = "Submit Report"
+        binding.submitReportBtn.text = getString(R.string.submit_reportt)
         bse64Image = null
     }
 
