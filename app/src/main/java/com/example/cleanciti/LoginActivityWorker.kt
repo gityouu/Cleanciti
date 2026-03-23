@@ -42,7 +42,7 @@ class LoginActivityWorker : BaseActivity() {
                 val formattedId = if (inputId.startsWith("CC-")) inputId.substring(3) else inputId
 
                 binding.workerLoginButton.isEnabled = false
-                binding.workerLoginButton.text = "Logging in..."
+                binding.workerLoginButton.text = getString(R.string.logging_in)
 
                 performWorkerLogin(formattedId, inputPassword)
             } else {
@@ -85,6 +85,6 @@ class LoginActivityWorker : BaseActivity() {
 
     private fun resetLoginButton() {
         binding.workerLoginButton.isEnabled = true
-        binding.workerLoginButton.text = "Login"
+        binding.workerLoginButton.text = getString(R.string.loginn)
     }
 }

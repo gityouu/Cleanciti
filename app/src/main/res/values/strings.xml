@@ -54,4 +54,5 @@
     <string name="gps_active">GPS Active</string>
     <string name="location_available">Location available</string>
     <string name="hello">Hello, %1$s</string>
+    <string name="logging_in">Logging in...</string>
 </resources>
