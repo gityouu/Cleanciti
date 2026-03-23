@@ -12,6 +12,7 @@
         android:id="@+id/logoSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="visible"
@@ -63,7 +64,7 @@
         app:layout_constraintTop_toBottomOf="@+id/logoSection">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -71,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:text="@string/sign_in"
+                android:text="@string/sign_in_with_phone"
                 android:textColor="#FFFFFF"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -86,14 +87,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:text="@string/a_field_worker"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground"
+                android:text="@string/a_field_worker"
                 android:textColor="#FFFFFF"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 android:textStyle="italic"
-                tools:ignore="SmallSp" />
+                tools:ignore="SmallSp,TouchTargetSizeCheck" />
         </LinearLayout>
 
         <TextView
@@ -101,61 +102,41 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/email_address"
+            android:text="@string/phone_number"
             android:textColor="#94a3b8"
-            android:textSize="10sp"
+            android:textSize="11sp"
             android:textStyle="bold"
             tools:ignore="SmallSp" />
 
-        <EditText
-            android:id="@+id/loginEmail"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="@drawable/input_background"
-            android:hint="@string/name_example_com"
-            android:textSize="11sp"
-            android:importantForAutofill="no"
-            android:inputType="textEmailAddress"
-            android:paddingHorizontal="16dp"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#94a3b8" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="8dp"
-            android:importantForAutofill="no"
-            android:text="@string/password"
-            android:textColor="#94a3b8"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            tools:ignore="SmallSp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_233"
+                android:textColor="#13ec49"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp"/>
 
-        <EditText
-            android:id="@+id/loginPassword"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@drawable/input_background"
-            android:hint="@string/passwordPlaceholder"
-            android:textSize="11sp"
-            android:inputType="textPassword"
-            android:paddingHorizontal="16dp"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#94a3b8"
-            tools:ignore="Autofill" />
-
-        <TextView
-            android:id="@+id/forgotPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/forgot_password"
-            android:textColor="#13ec49"
-            android:layout_gravity="end"
-            android:layout_marginTop="12dp"
-            android:textSize="10sp"
-            android:textStyle="bold" />
+            <EditText
+                android:id="@+id/loginPhone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:hint="@string/_50_123_4567"
+                android:importantForAutofill="no"
+                android:inputType="phone"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#94a3b8"
+                android:textSize="14sp" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/reporterLoginButton"
@@ -164,7 +145,7 @@
             android:layout_marginTop="24dp"
             android:background="@drawable/btn_primary"
             app:backgroundTint="@null"
-            android:text="@string/login_to_account"
+            android:text="@string/send_verification_code"
             android:textAllCaps="false"
             android:textColor="#000"
             android:textSize="15sp" />
@@ -187,7 +168,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:text="@string/or"
                 android:textColor="#78909C"
-                android:textSize="10sp"
+                android:textSize="11sp"
                 tools:ignore="SmallSp" />
 
             <View
@@ -205,7 +186,6 @@
             android:gravity="center"
             android:textAllCaps="false"
             android:textColor="#e2e8f0"
-            android:textSize="11sp" />
+            android:textSize="12sp" />
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,7 +12,8 @@
         android:id="@+id/logoSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="visible"
@@ -65,7 +66,7 @@
         app:layout_constraintTop_toBottomOf="@id/logoSection">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -73,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:text="@string/sign_up"
+                android:text="@string/sign_up_with_phone"
                 android:textColor="#FFFFFF"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -93,7 +94,7 @@
                 android:focusable="true"
                 android:text="@string/a_field_worker"
                 android:textColor="#FFFFFF"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 android:textStyle="italic"
                 tools:ignore="SmallSp,TouchTargetSizeCheck" />
         </LinearLayout>
@@ -103,65 +104,66 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/email_address"
+            android:text="@string/phone_number"
             android:textColor="#94a3b8"
-            android:textSize="10sp"
+            android:textSize="11sp"
             android:textStyle="bold"
             tools:ignore="SmallSp" />
 
-        <EditText
-            android:id="@+id/signUpEmail"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="@drawable/input_background"
-            android:hint="@string/name_example_com"
-            android:textSize="11sp"
-            android:importantForAutofill="no"
-            android:inputType="textEmailAddress"
-            android:paddingHorizontal="16dp"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#94a3b8" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_233"
+                android:textColor="#13ec49"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp"/>
+
+            <EditText
+                android:id="@+id/signUpPhone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:hint="@string/_50_123_4567"
+                android:importantForAutofill="no"
+                android:inputType="phone"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#94a3b8"
+                android:textSize="14sp" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="8dp"
-            android:importantForAutofill="no"
-            android:text="@string/password"
+            android:text="@string/we_ll_send_a_6_digit_code_to_verify_your_number"
             android:textColor="#94a3b8"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            tools:ignore="SmallSp" />
-
-        <EditText
-            android:id="@+id/signUpPassword"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@drawable/input_background"
-            android:hint="@string/passwordPlaceholder"
             android:textSize="11sp"
-            android:inputType="textPassword"
-            android:paddingHorizontal="16dp"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#94a3b8"
-            tools:ignore="Autofill" />
+            tools:ignore="SmallSp" />
 
         <TextView
             android:id="@+id/haveAnAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="12dp"
-            android:text="@string/have_an_account"
-            android:textColor="#13ec49"
+            android:layout_marginTop="16dp"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:textSize="10sp"
+            android:text="@string/have_an_account"
+            android:textColor="#13ec49"
+            android:textSize="12sp"
             android:textStyle="bold"
-            tools:ignore="SmallSp" />
+            tools:ignore="SmallSp,TouchTargetSizeCheck" />
 
         <Button
             android:id="@+id/signupButton"
@@ -170,7 +172,7 @@
             android:layout_marginTop="24dp"
             android:background="@drawable/btn_primary"
             app:backgroundTint="@null"
-            android:text="@string/sign_up"
+            android:text="@string/get_verification_code"
             android:textAllCaps="false"
             android:textColor="#000"
             android:textSize="15sp" />
