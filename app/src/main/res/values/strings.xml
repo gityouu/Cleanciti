@@ -53,4 +53,6 @@
     <string name="_0">0</string>
     <string name="didn_t_receive_a_code_resend">Didn\'t receive a code? Resend</string>
     <string name="verify_amp_continue"><![CDATA[Verify &amp; Continue]]></string>
+    <string name="enter_the_6_digit_code_sent_to">Enter the 6-digit code sent to %1$s</string>
+    <string name="resend_code_in_s">Resend code in %1$ds</string>
 </resources>
