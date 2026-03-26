@@ -22,7 +22,7 @@
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
-            android:name=".LoginActivityReporter"
+            android:name=".VerifyOtpActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
@@ -30,7 +30,7 @@
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
-            android:name=".SignupActivityReporter"
+            android:name=".AuthActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="true" >
             <intent-filter>

@@ -6,16 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg"
-    tools:context=".LoginActivityReporter">
+    tools:context=".AuthActivity">
 
     <LinearLayout
         android:id="@+id/logoSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
         android:layout_marginTop="30dp"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/signUpCard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +26,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="140dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="16dp">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -51,17 +53,17 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/loginCard"
-        android:layout_width="match_parent"
+        android:id="@+id/signUpCard"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="22dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/card_surface"
         android:orientation="vertical"
         android:padding="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logoSection">
+        app:layout_constraintTop_toBottomOf="@id/logoSection">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,9 +74,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:text="@string/sign_in_with_phone"
+                android:text="@string/sign_up_with_phone"
                 android:textColor="#FFFFFF"
-                android:textSize="15sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <View
@@ -121,12 +123,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/_233"
                 android:textColor="#13ec49"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 android:layout_marginEnd="8dp"/>
 
             <EditText
-                android:id="@+id/loginPhone"
+                android:id="@+id/signUpPhone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
@@ -135,20 +137,30 @@
                 android:inputType="phone"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#94a3b8"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="4dp"
+            android:text="@string/we_ll_send_a_6_digit_code_to_verify_your_number"
+            android:textColor="#94a3b8"
+            android:textSize="9sp"
+            tools:ignore="SmallSp" />
+
         <Button
-            android:id="@+id/reporterLoginButton"
+            android:id="@+id/signupButton"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/btn_primary"
             app:backgroundTint="@null"
-            android:text="@string/send_verification_code"
+            android:text="@string/get_verification_code"
             android:textAllCaps="false"
             android:textColor="#000"
-            android:textSize="15sp" />
+            android:textSize="13sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -166,10 +178,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:text="@string/or"
+                android:text="OR"
                 android:textColor="#78909C"
-                android:textSize="11sp"
-                tools:ignore="SmallSp" />
+                android:textSize="11sp" />
 
             <View
                 android:layout_width="0dp"
@@ -182,10 +193,10 @@
             android:id="@+id/reportAnonymously"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/report_anonymously"
+            android:text="Report Anonymously"
             android:gravity="center"
-            android:textAllCaps="false"
             android:textColor="#e2e8f0"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:padding="5dp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
