@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg">
@@ -59,6 +60,9 @@
                 android:id="@+id/otp1"
                 style="@style/OtpBoxStyle"
                 android:hint="@string/_0"
+                android:inputType="number"
+                android:cursorVisible="true"
+                android:textIsSelectable="false"
                 android:textColor="#94a3b8"
                 android:textColorHint="#94a3b8"
                 tools:ignore="Autofill,LabelFor,TouchTargetSizeCheck" />
@@ -67,6 +71,9 @@
                 android:id="@+id/otp2"
                 style="@style/OtpBoxStyle"
                 android:hint="@string/_0"
+                android:inputType="number"
+                android:cursorVisible="true"
+                android:textIsSelectable="false"
                 android:textColorHint="#94a3b8"
                 android:textColor="#94a3b8"
                 tools:ignore="Autofill,LabelFor,TouchTargetSizeCheck" />
@@ -75,6 +82,9 @@
                 android:id="@+id/otp3"
                 style="@style/OtpBoxStyle"
                 android:hint="@string/_0"
+                android:inputType="number"
+                android:cursorVisible="true"
+                android:textIsSelectable="false"
                 android:textColorHint="#94a3b8"
                 android:textColor="#94a3b8"
                 tools:ignore="Autofill,LabelFor,TouchTargetSizeCheck" />
@@ -83,6 +93,9 @@
                 android:id="@+id/otp4"
                 style="@style/OtpBoxStyle"
                 android:hint="@string/_0"
+                android:inputType="number"
+                android:cursorVisible="true"
+                android:textIsSelectable="false"
                 android:textColorHint="#94a3b8"
                 android:textColor="#94a3b8"
                 tools:ignore="Autofill,LabelFor,TouchTargetSizeCheck" />
@@ -91,6 +104,9 @@
                 android:id="@+id/otp5"
                 style="@style/OtpBoxStyle"
                 android:hint="@string/_0"
+                android:inputType="number"
+                android:cursorVisible="true"
+                android:textIsSelectable="false"
                 android:textColor="#94a3b8"
                 android:textColorHint="#94a3b8"
                 tools:ignore="Autofill,LabelFor,TouchTargetSizeCheck" />
@@ -99,10 +115,12 @@
                 android:id="@+id/otp6"
                 style="@style/OtpBoxStyle"
                 android:hint="@string/_0"
+                android:inputType="number"
+                android:cursorVisible="true"
+                android:textIsSelectable="false"
                 android:textColorHint="#94a3b8"
                 android:textColor="#94a3b8"
                 tools:ignore="Autofill,LabelFor,TouchTargetSizeCheck" />
-
         </LinearLayout>
 
         <Button
