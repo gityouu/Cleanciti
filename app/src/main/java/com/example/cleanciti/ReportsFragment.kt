@@ -9,16 +9,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cleanciti.databinding.FragmentReportsBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 
 class ReportsFragment : Fragment() {
 
     private var _binding: FragmentReportsBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding!!  
     private lateinit var reportsAdapter: ReportsAdapter
-
     private val db = FirebaseFirestore.getInstance()
     private val userId = FirebaseAuth.getInstance().currentUser?.uid
+    private var reportsListener: ListenerRegistration? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentReportsBinding.inflate(inflater, container, false)
@@ -36,16 +37,24 @@ class ReportsFragment : Fragment() {
             adapter = reportsAdapter
         }
 
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            fetchUserReports()
+        }
+
         fetchUserReports()
     }
 
     private fun fetchUserReports() {
         if (userId == null) return
 
-        db.collection("reports")
+        reportsListener = db.collection("reports")
             .whereEqualTo("reporterId", userId)
             .orderBy("createdAt", Query.Direction.DESCENDING)
             .addSnapshotListener { value, error ->
+                // SAFETY CHECK: If the fragment is gone, stop here!
+                if (_binding == null || !isAdded) return@addSnapshotListener
+
+                binding.swipeRefreshLayout.isRefreshing = false
                 if (error != null) return@addSnapshotListener
 
                 val reportsList = value?.toObjects(Report::class.java) ?: emptyList()
@@ -56,7 +65,6 @@ class ReportsFragment : Fragment() {
                 } else {
                     binding.emptyStateText.visibility = View.GONE
                     binding.reportsRecyclerView.visibility = View.VISIBLE
-                    // Update the adapter with new data
                     reportsAdapter.updateData(reportsList)
                 }
             }
@@ -64,6 +72,7 @@ class ReportsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        reportsListener?.remove()
         _binding = null
     }
 }

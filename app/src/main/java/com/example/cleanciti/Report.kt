@@ -7,5 +7,9 @@ data class Report (
     val category: String = "",
     val status: String = "New",
     val photoURL: String? = null,
+    val reporterId: String = "",
+    val locationName: String = "",
+    val description: String = "",
+    val assignedTeamMunicipality: String = "",
     val createdAt: Timestamp? = null
 )
