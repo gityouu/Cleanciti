@@ -70,14 +70,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:text="@string/sign_up_with_phone"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="24dp"-->
+<!--                android:text="@string/sign_up_with_phone"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textStyle="bold" />-->
 
             <View
                 android:layout_width="0dp"
@@ -88,7 +88,7 @@
                 android:id="@+id/fieldWorker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="14dp"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
@@ -178,7 +178,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:text="OR"
+                android:text="@string/or"
                 android:textColor="#78909C"
                 android:textSize="11sp" />
 
@@ -193,10 +193,14 @@
             android:id="@+id/reportAnonymously"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Report Anonymously"
+            android:text="@string/report_anonymously"
+            android:background="?attr/selectableItemBackground"
+            android:focusable="true"
+            android:clickable="true"
             android:gravity="center"
             android:textColor="#e2e8f0"
             android:textSize="12sp"
-            android:padding="5dp" />
+            android:padding="5dp"
+            tools:ignore="SmallSp"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
