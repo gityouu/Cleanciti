@@ -7,7 +7,7 @@
 
     <item
         android:id="@+id/nav_report"
-        android:icon="@drawable/ic_add_circle"
+        android:icon="@drawable/ic_task"
         android:title="@string/reports"/>
 
     <item
