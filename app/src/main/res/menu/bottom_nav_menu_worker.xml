@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_home"
+        android:id="@+id/workerHomeFragment"
         android:icon="@drawable/ic_home"
         android:title="@string/home"/>
 
     <item
-        android:id="@+id/nav_report"
-        android:icon="@drawable/ic_add_circle"
+        android:id="@+id/TeamReportsFragment"
+        android:icon="@drawable/ic_task"
         android:title="@string/reports"/>
 
     <item
