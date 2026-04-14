@@ -111,16 +111,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@android:color/transparent"
-                android:drawableStart="@drawable/ic_add_circle"
+                android:drawableStart="@drawable/ic_home"
                 android:drawablePadding="16dp"
-                android:gravity="center"
-                android:paddingStart="16dp"
+                android:gravity="start|center_vertical"
                 android:text="@string/logout"
-                android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="#f87171"
-                android:textSize="16sp"
-                tools:ignore="RtlSymmetry" />
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="#28392c" />
+
+            <Button
+                android:id="@+id/btnDeleteAccount"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@android:color/transparent"
+                android:drawableStart="@drawable/ic_help_outline"
+                android:drawablePadding="16dp"
+                android:gravity="start|center_vertical"
+                android:text="@string/delete_account"
+                android:textAllCaps="false"
+                android:textColor="#ef4444"
+                android:textSize="16sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
