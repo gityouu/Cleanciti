@@ -2,12 +2,13 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
     app:cardBackgroundColor="#1c261e"
     app:cardCornerRadius="12dp"
-    app:cardElevation="0dp">
+    app:cardElevation="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,9 +20,11 @@
             android:id="@+id/reportThumbnail"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:contentDescription="@string/waste_image"
             android:scaleType="centerCrop"
             android:background="@drawable/input_background"
-            android:clipToOutline="true" />
+            android:clipToOutline="true"
+            tools:targetApi="31" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -35,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="11sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -54,7 +57,8 @@
             android:paddingHorizontal="8dp"
             android:paddingVertical="4dp"
             android:textColor="#13ec49"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textSize="9sp"
+            android:textStyle="bold"
+            tools:ignore="SmallSp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
