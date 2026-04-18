@@ -11,11 +11,18 @@
         android:label="Team Dashboard"
         tools:layout="@layout/fragment_worker_home" />
 
-<!--    <fragment-->
-<!--        android:id="@+id/areaReportsFragment"-->
-<!--        android:name="com.example.cleanciti.AreaReportsFragment"-->
-<!--        android:label="Assigned Tasks"-->
-<!--        tools:layout="@layout/fragment_area_reports" />-->
+    <fragment
+        android:id="@+id/TeamReportsFragment"
+        android:name="com.example.cleanciti.TeamReportsFragment"
+        android:label="Assigned Tasks"
+        tools:layout="@layout/fragment_team_reports">
+
+        <argument
+            android:name="MUNICIPALITY_ID"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 
 <!--    <fragment-->
 <!--        android:id="@+id/workerProfileFragment"-->
