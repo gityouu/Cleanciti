@@ -57,4 +57,23 @@
     <string name="resend_code_in_s">Resend code in %1$ds</string>
     <string name="sending_code">Sending Code...</string>
     <string name="verifying">Verifying...</string>
+    <string name="logo">logo</string>
+    <string name="user">User</string>
+    <string name="_233_">+233...</string>
+    <string name="reporter">Reporter</string>
+    <string name="joined_march_2026">Joined March 2026</string>
+    <string name="logout">Logout</string>
+    <string name="help">help</string>
+    <string name="joined">Joined %1$s</string>
+    <string name="user_">User_%1$s</string>
+    <string name="assigned_tasks">Assigned Tasks</string>
+    <string name="no_reports_assigned_to_your_team">No reports assigned to your team</string>
+    <string name="confirm_collected">Confirm Collection</string>
+    <string name="updating">Updating...</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="organic_waste">Organic Waste</string>
+    <string name="ga_west_manhean">Ga West, Manhean</string>
+    <string name="collect">Collect</string>
+    <string name="waste_image">waste image</string>
+    <string name="verify_collection">Verify Collection</string>
 </resources>
