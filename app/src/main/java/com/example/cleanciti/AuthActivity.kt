@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.cleanciti.databinding.ActivityAuthBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
@@ -44,7 +46,7 @@ class AuthActivity : BaseActivity() {
             startActivity(Intent(this, LoginActivityWorker::class.java))
         }
 
-        // Integrated Anonymous Login from old LoginActivity
+        //Anonymous Login
         binding.reportAnonymously.setOnClickListener {
             loginUserAnonymously()
         }
@@ -57,7 +59,8 @@ class AuthActivity : BaseActivity() {
                 val fullNumber = "+233$phone"
                 checkUserAndProceed(fullNumber)
             } else {
-                Toast.makeText(this, "Enter a valid phone number", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Enter a valid phone number",
+                    Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -75,7 +78,8 @@ class AuthActivity : BaseActivity() {
             }
             .addOnFailureListener { e ->
                 binding.signupButton.isEnabled = true
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error: ${e.message}",
+                    Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -97,7 +101,8 @@ class AuthActivity : BaseActivity() {
         override fun onVerificationFailed(e: FirebaseException) {
             binding.signupButton.isEnabled = true
             binding.signupButton.text = getString(R.string.get_verification_code)
-            Toast.makeText(this@AuthActivity, "Failed: ${e.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(this@AuthActivity, "Failed: ${e.message}",
+                Toast.LENGTH_LONG).show()
         }
 
         override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
@@ -120,10 +125,51 @@ class AuthActivity : BaseActivity() {
     }
 
     private fun loginUserAnonymously() {
+        val sharedPrefs = getSharedPreferences("CleanCitiPrefs", MODE_PRIVATE)
+        val existingUid = sharedPrefs.getString("persistent_uid", null)
+
+        if (existingUid != null) {
+            // The device already has an anonymous account. Since it's currently signed out,
+            // it cannot be restored. This should only happen if the user deleted the account
+            // via "Delete Account" (which removes persistent_uid).
+            // If we reach here unexpectedly, explain the situation.
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Anonymous Profile Already Exists")
+                .setMessage("You already have an anonymous account on this device. It is currently " +
+                        "signed out, so it cannot be restored. Restart the app or delete the account " +
+                        "via profile settings to create a new one.")
+                .setPositiveButton("OK", null)
+                .show()
+            return
+        }
+
+        // Normal anonymous sign-in (only first time per device)
         auth.signInAnonymously().addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+                val user = auth.currentUser
+                val uid = user?.uid ?: return@addOnCompleteListener
+                sharedPrefs.edit { putString("persistent_uid", uid) }
+
+                val userData = hashMapOf(
+                    "role" to "Reporter",
+                    "isAnonymous" to true,
+                    "createdAt" to com.google.firebase.Timestamp.now()
+                )
+                db.collection("users").document(uid).set(userData)
+                    .addOnSuccessListener {
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    }
+                    .addOnFailureListener {
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    }
+            } else {
+                Toast.makeText(
+                    this,
+                    "Sign-in failed: ${task.exception?.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
