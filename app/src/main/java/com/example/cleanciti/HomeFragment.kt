@@ -3,6 +3,7 @@ package com.example.cleanciti
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Bitmap
+import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
 import android.provider.MediaStore
@@ -71,7 +72,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(
+            requireActivity())
 
         requestLocationPermission.launch(arrayOf(
             android.Manifest.permission.ACCESS_FINE_LOCATION,
@@ -83,8 +85,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupSpinner() {
-        val categories = arrayOf("Overflowing Bin", "Illegal Dumping", "Littering", "Hazardous Waste", "Other")
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, categories)
+        val categories = arrayOf("Overflowing Bin", "Illegal Dumping", "Littering",
+            "Hazardous Waste", "Other")
+        val adapter = ArrayAdapter(requireContext(),
+            android.R.layout.simple_spinner_dropdown_item, categories)
         binding.categorySpinner.adapter = adapter
     }
 
@@ -100,7 +104,8 @@ class HomeFragment : Fragment() {
             val userId = auth.currentUser?.uid
 
             if (bse64Image == null) {
-                Toast.makeText(requireContext(), "Please provide a photo", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please provide a photo",
+                    Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -113,15 +118,18 @@ class HomeFragment : Fragment() {
     private fun getAssignedTeamMunicipality(lat: Double?, lng: Double?): String {
         if (lat == null || lng == null) return "UNASSIGNED_OR_GENERAL_ADMIN"
 
-        return when {
+        return when (lat) {
             // Ga Central (Team A) boundaries
-            (lat in 5.58..5.65) && (lng in -0.32..-0.25) -> "GA_CENTRAL_001"
+            in 5.55..5.68 -> if (lng in -0.32..-0.23) "GA_CENTRAL_001"
+            else "UNASSIGNED_OR_GENERAL_ADMIN"
 
             // Ga North (Team B) boundaries
-            (lat in 5.66..5.75) && (lng in -0.35..-0.28) -> "GA_NORTH_001"
+            in 5.66..5.75 -> if (lng in -0.35..-0.28) "GA_NORTH_001"
+            else "UNASSIGNED_OR_GENERAL_ADMIN"
 
             // Ga West (Team C) boundaries
-            (lat in 5.70..5.85) && (lng in -0.45..-0.36) -> "GA_WEST_001"
+            in 5.70..5.85 -> if (lng in -0.45..-0.36) "GA_WEST_001"
+            else "UNASSIGNED_OR_GENERAL_ADMIN"
 
             else -> "UNASSIGNED_OR_GENERAL_ADMIN"
         }
@@ -131,16 +139,19 @@ class HomeFragment : Fragment() {
         binding.submitReportBtn.isEnabled = false
         binding.submitReportBtn.text = getString(R.string.submitting)
 
-        val metadataRef = db.collection("metadata").document("reports_stats")
+        val metadataRef = db.collection("metadata")
+            .document("reports_stats")
         val reportsRef = db.collection("reports").document()
         val notificationRef = db.collection("notifications").document()
 
         // Calculate the team ID before the transaction
-        val teamMunicipality = getAssignedTeamMunicipality(currentLatitude, currentLongitude)
+        val teamMunicipality = getAssignedTeamMunicipality(currentLatitude,
+            currentLongitude)
 
         db.runTransaction { transaction ->
             val snapshot = transaction.get(metadataRef)
-            val lastNum = if (snapshot.exists()) snapshot.getLong("last_report_number") ?: 0 else 0
+            val lastNum = if (snapshot.exists()) snapshot.getLong("last_report_number") ?: 0
+            else 0
             val nextNum = lastNum + 1
 
             val reportData = hashMapOf(
@@ -174,39 +185,81 @@ class HomeFragment : Fragment() {
 
             nextNum
         }.addOnSuccessListener { _ ->
-            Toast.makeText(requireContext(), "Report sent!", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Report sent!",
+                Toast.LENGTH_LONG).show()
             resetUI()
         }.addOnFailureListener { e ->
             binding.submitReportBtn.isEnabled = true
             binding.submitReportBtn.text = getString(R.string.submit_reportt)
-            Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Error: ${e.message}",
+                Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun getLocation() {
-        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            if (location != null) {
-                currentLatitude = location.latitude
-                currentLongitude = location.longitude
+        val context = context ?: return
 
-                updateLocationBanner(location.latitude, location.longitude)
+        // Explicitly verify fine location permission before calling the API
+        if (androidx.core.content.ContextCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        ) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                if (location != null) {
+                    currentLatitude = location.latitude
+                    currentLongitude = location.longitude
+
+                    updateLocationBanner(location.latitude, location.longitude)
+                }
             }
+        } else {
+            // Fallback or warning message if permission was unexpectedly lost
+            Toast.makeText(context, "Location permission required",
+                Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun updateLocationBanner(lat: Double, lng: Double) {
         try {
             val geocoder = Geocoder(requireContext(), Locale.getDefault())
-            val addresses = geocoder.getFromLocation(lat, lng, 1)
 
-            if (addresses != null && addresses.isNotEmpty()) {
-                val address = addresses[0]
+            //Check if device is running Android 13 (API 33) or higher
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                geocoder.getFromLocation(lat, lng, 1,
+                    object : Geocoder.GeocodeListener {
+                    override fun onGeocode(addresses: MutableList<Address>) {
+                        // Geocoder runs background threads, switch to Main Thread to update UI
+                        activity?.runOnUiThread {
+                            if (addresses.isNotEmpty()) {
+                                val address = addresses[0]
+                                val city = address.locality ?: address.subAdminArea ?:
+                                "Unknown Location"
+                                binding.locationText.text = city
+                            } else {
+                                binding.locationText.text = getString(
+                                    R.string.location_available)
+                            }
+                        }
+                    }
 
-                val city = address.locality ?: address.subAdminArea ?: "Unknown Location"
-
-                binding.locationText.text = city
+                    override fun onError(errorMessage: String?) {
+                        activity?.runOnUiThread {
+                            binding.locationText.text = getString(R.string.gps_active)
+                        }
+                    }
+                })
             } else {
-                binding.locationText.text = getString(R.string.location_available)
+                //Fallback fallback for legacy devices (Older Android Versions)
+                @Suppress("DEPRECATION")
+                val addresses = geocoder.getFromLocation(lat, lng, 1)
+                if (!addresses.isNullOrEmpty()) {
+                    val address = addresses[0]
+                    val city = address.locality ?: address.subAdminArea ?: "Unknown Location"
+                    binding.locationText.text = city
+                } else {
+                    binding.locationText.text = getString(R.string.location_available)
+                }
             }
         } catch (_: Exception) {
             binding.locationText.text = getString(R.string.gps_active)
@@ -224,7 +277,7 @@ class HomeFragment : Fragment() {
 
     private fun encodeImageToBase64(bitmap: Bitmap): String {
         val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, outputStream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
         val byteArray = outputStream.toByteArray()
         val rawBase64 = Base64.encodeToString(byteArray, Base64.DEFAULT)
 
