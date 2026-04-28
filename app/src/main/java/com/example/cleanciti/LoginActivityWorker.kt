@@ -39,14 +39,16 @@ class LoginActivityWorker : BaseActivity() {
             val inputPassword = binding.teamPassword.text.toString().trim()
 
             if (inputId.isNotEmpty() && inputPassword.isNotEmpty()) {
-                val formattedId = if (inputId.startsWith("CC-")) inputId.substring(3) else inputId
+                val formattedId = if (inputId.startsWith("CC-")) inputId.substring(
+                    3) else inputId
 
                 binding.workerLoginButton.isEnabled = false
                 binding.workerLoginButton.text = getString(R.string.logging_in)
 
                 performWorkerLogin(formattedId, inputPassword)
             } else {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please fill all fields",
+                    Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -57,29 +59,38 @@ class LoginActivityWorker : BaseActivity() {
             .addOnSuccessListener { documents ->
                 if (documents.isEmpty) {
                     resetLoginButton()
-                    Toast.makeText(this, "Invalid Team ID", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Invalid Team ID",
+                        Toast.LENGTH_SHORT).show()
                     return@addOnSuccessListener
                 }
 
                 val team = documents.documents[0]
                 val teamName = team.getString("assignedTeam")
                 val expectedPass = teamPasswords[teamName]
-                val intent = Intent(this, MainActivity::class.java)
 
+                // Inside performWorkerLogin, after validating password
                 if (inputPass == expectedPass) {
-                    Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
+                    val municipalityId = team.getString("municipalityId") ?: ""
+
+                    android.util.Log.d("WorkerLogin", "Team: $teamName, " +
+                            "Municipality ID: $municipalityId")
+
+                    val intent = Intent(this, MainActivity::class.java)
                     intent.putExtra("USER_ROLE", "worker")
                     intent.putExtra("TEAM_ID", "CC-$id")
+                    intent.putExtra("MUNICIPALITY_ID", municipalityId)
                     startActivity(intent)
                     finish()
                 } else {
                     resetLoginButton()
-                    Toast.makeText(this, "Invalid password", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Invalid password",
+                        Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener { e ->
                 resetLoginButton()
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error: ${e.message}",
+                    Toast.LENGTH_SHORT).show()
             }
     }
 
