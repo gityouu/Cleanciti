@@ -24,7 +24,7 @@ class VerifyOtpActivity : BaseActivity() {
     private var phoneNumber: String? = null
     private var isLogin: Boolean = false
     private var countDownTimer: CountDownTimer? = null
-    private var resendToken: PhoneAuthProvider.ForceResendingToken? = null // Passed from previous activity
+    private var resendToken: PhoneAuthProvider.ForceResendingToken? = null//Passed from previous activity
     private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
             val smsCode = credential.smsCode
@@ -35,7 +35,8 @@ class VerifyOtpActivity : BaseActivity() {
         }
 
         override fun onVerificationFailed(e: com.google.firebase.FirebaseException) {
-            Toast.makeText(this@VerifyOtpActivity, e.message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@VerifyOtpActivity, e.message,
+                Toast.LENGTH_SHORT).show()
         }
 
         override fun onCodeSent(vId: String, token: PhoneAuthProvider.ForceResendingToken) {
@@ -55,7 +56,7 @@ class VerifyOtpActivity : BaseActivity() {
             insets
         }
 
-        // 1. Retrieve data from Intent
+        //Retrieve data from Intent
         verificationId = intent.getStringExtra("VERIFICATION_ID")
         phoneNumber = intent.getStringExtra("PHONE_NUMBER")
         isLogin = intent.getBooleanExtra("IS_LOGIN", false)
@@ -69,13 +70,16 @@ class VerifyOtpActivity : BaseActivity() {
             val code = getOtpCode()
             if (code.length == 6) {
                 verifyCode(code)
+                buttonStatus()
             } else {
-                Toast.makeText(this, "Please enter the full 6-digit code", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please enter the full 6-digit code",
+                    Toast.LENGTH_SHORT).show()
             }
         }
 
-        resendToken = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("RESEND_TOKEN", PhoneAuthProvider.ForceResendingToken::class.java)
+        resendToken = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU)
+        { intent.getParcelableExtra("RESEND_TOKEN",
+            PhoneAuthProvider.ForceResendingToken::class.java)
         } else {
             @Suppress("DEPRECATION")
             intent.getParcelableExtra("RESEND_TOKEN")
@@ -90,27 +94,52 @@ class VerifyOtpActivity : BaseActivity() {
     }
 
     private fun setupOtpInputs() {
-        val inputs = arrayOf(binding.otp1, binding.otp2, binding.otp3, binding.otp4, binding.otp5, binding.otp6)
+        val inputs = arrayOf(binding.otp1, binding.otp2, binding.otp3, binding.otp4, binding.otp5,
+            binding.otp6)
 
         for (i in inputs.indices) {
             inputs[i].addTextChangedListener(object : TextWatcher {
+                private var isUpdating = false // Flag to prevent recursive loopn
+
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    // Auto-move to next box
+                    if (isUpdating) return
+
+                    // Handle Clipboard Paste or SMS Auto-Fill (Length > 1)
+                    if (s != null && s.length > 1) {
+                        val cleanCode = s.toString().trim().filter { it.isDigit() }
+                        if (cleanCode.length >= 6) {
+                            isUpdating = true
+                            fillOtpBoxes(cleanCode.take(6)) // Distribute characters across all fields
+                            isUpdating = false
+                            binding.otp6.requestFocus() // Focus final element
+                            return
+                        }
+                    }
+
+                    // Standard Workflow: Auto-move to next box on single digit input
                     if (s?.length == 1 && i < inputs.size - 1) {
                         inputs[i + 1].requestFocus()
                     }
                 }
-                override fun afterTextChanged(s: Editable?) {}
+
+                override fun afterTextChanged(s: Editable?) {
+                    //If a box gets multiple numbers accidentally from an unhandled paste system, truncate it
+                    if (s != null && s.length > 1 && !isUpdating) {
+                        inputs[i].setText(s.first().toString())
+                        inputs[i].setSelection(1)
+                    }
+                }
             })
 
             inputs[i].setOnFocusChangeListener { view, hasFocus ->
                 val editText = view as EditText
                 if (hasFocus) {
-                    // Clear the hint when the box is clicked/focused
                     editText.hint = ""
+                    // Highlight text on focus so typing over it replaces the old character automatically
+                    editText.selectAll()
                 } else {
-                    // Restore the "0" hint if the user leaves the box empty
                     if (editText.text.isEmpty()) {
                         editText.hint = getString(R.string._0)
                     }
@@ -121,7 +150,9 @@ class VerifyOtpActivity : BaseActivity() {
             inputs[i].setOnKeyListener { _, keyCode, event ->
                 if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN) {
                     if (inputs[i].text.isEmpty() && i > 0) {
+                        inputs[i - 1].text.clear() // Clear the previous box explicitly for a better UX
                         inputs[i - 1].requestFocus()
+                        return@setOnKeyListener true
                     }
                 }
                 false
@@ -141,7 +172,8 @@ class VerifyOtpActivity : BaseActivity() {
     }
 
     private fun fillOtpBoxes(code: String) {
-        val inputs = arrayOf(binding.otp1, binding.otp2, binding.otp3, binding.otp4, binding.otp5, binding.otp6)
+        val inputs = arrayOf(binding.otp1, binding.otp2, binding.otp3, binding.otp4, binding.otp5,
+            binding.otp6)
         for (i in code.indices) {
             if (i < inputs.size) {
                 inputs[i].setText(code[i].toString())
@@ -161,7 +193,8 @@ class VerifyOtpActivity : BaseActivity() {
                         saveUserToFirestore()
                     }
                 } else {
-                    Toast.makeText(this, "Verification Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Verification Failed: " +
+                            "${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -197,7 +230,8 @@ class VerifyOtpActivity : BaseActivity() {
         val options = builder.build()
         PhoneAuthProvider.verifyPhoneNumber(options)
         startResendTimer()
-        Toast.makeText(this, "Resending code...", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Resending code...",
+            Toast.LENGTH_SHORT).show()
     }
 
     private fun saveUserToFirestore() {
@@ -212,7 +246,8 @@ class VerifyOtpActivity : BaseActivity() {
             .set(userMap)
             .addOnSuccessListener { navigateToMain() }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error saving profile: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error saving profile: ${e.message}",
+                    Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -221,5 +256,10 @@ class VerifyOtpActivity : BaseActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
+    }
+
+    private fun buttonStatus() {
+        binding.verifyButton.isEnabled = false
+        binding.verifyButton.text = getString(R.string.verifying)
     }
 }
