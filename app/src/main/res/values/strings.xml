@@ -32,7 +32,7 @@
     <string name="_12">00</string>
     <string name="new_reports">New Reports</string>
     <string name="_05">00</string>
-    <string name="collected">Collected</string>
+    <string name="collected">✓ Collected</string>
     <string name="recent_activity">Recent Activity</string>
     <string name="submit_reportt">Submit Report</string>
     <string name="submitting">Submitting...</string>
