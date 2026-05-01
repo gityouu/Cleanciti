@@ -148,6 +148,8 @@ class HomeFragment : Fragment() {
         val teamMunicipality = getAssignedTeamMunicipality(currentLatitude,
             currentLongitude)
 
+        val finalizedDescription = desc.ifBlank { "No additional details provided." }
+
         db.runTransaction { transaction ->
             val snapshot = transaction.get(metadataRef)
             val lastNum = if (snapshot.exists()) snapshot.getLong("last_report_number") ?: 0
@@ -158,7 +160,7 @@ class HomeFragment : Fragment() {
                 "reportNumber" to nextNum.toString(),
                 "reporterId" to userId,
                 "category" to category,
-                "description" to desc,
+                "description" to finalizedDescription,
                 "status" to "New",
                 "photoURL" to bse64Image,
                 "locationName" to binding.locationText.text.toString(), // "Accra, Greater Accra"
@@ -174,7 +176,7 @@ class HomeFragment : Fragment() {
 
             val notificationData = hashMapOf(
                 "title" to "New $category Report",
-                "message" to "Report #$nextNum: $desc",
+                "message" to "Report #$nextNum: $finalizedDescription",
                 "targetMunicipalityId" to teamMunicipality, // Routes to Team A, B, or C
                 "timestamp" to com.google.firebase.Timestamp.now(),
                 "isRead" to false
