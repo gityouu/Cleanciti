@@ -6,52 +6,86 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cleanciti.databinding.ItemTeamReportsBinding
 import com.example.cleanciti.databinding.ItemReportBinding
+import androidx.core.graphics.toColorInt
 
-class ReportsAdapter(private var reports: List<Report>) :
-    RecyclerView.Adapter<ReportsAdapter.ReportViewHolder>() {
+class ReportsAdapter(
+    private var reports: List<Report>,
+    private val isTeamView: Boolean,
+    private var onCollectClicked: (Report) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    class ReportViewHolder(val binding: ItemReportBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    // Define ViewTypes
+    private val vIEWTYPEREPORTER = 0
+    private val vIEWTYPETEAM = 1
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
-        val binding = ItemReportBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
-        )
-        return ReportViewHolder(binding)
+    override fun getItemViewType(position: Int): Int {
+        return if (isTeamView) vIEWTYPETEAM else vIEWTYPEREPORTER
     }
 
-    override fun onBindViewHolder(holder: ReportViewHolder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return if (viewType == vIEWTYPETEAM) {
+            val binding = ItemTeamReportsBinding.inflate(inflater, parent, false)
+            TeamViewHolder(binding)
+        } else {
+            val binding = ItemReportBinding.inflate(inflater, parent, false)
+            ReporterViewHolder(binding)
+        }
+    }
+
+    // Two different ViewHolders
+    class ReporterViewHolder(val binding: ItemReportBinding) : RecyclerView.ViewHolder(
+        binding.root)
+    class TeamViewHolder(val binding: ItemTeamReportsBinding) : RecyclerView.ViewHolder(
+        binding.root)
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val report = reports[position]
 
-        holder.binding.apply {
-            itemCategory.text = report.category
-            itemID.text = "#${report.reportNumber}"
-            itemStatus.text = report.status
+        // Inside onBindViewHolder in ReportsAdapter.kt
+        if (holder is TeamViewHolder) {
+            holder.binding.apply {
+                tvCategory.text = report.category
+                tvLocationName.text = report.locationName
 
-            val statusColor = when (report.status) {
-                "New" -> "#f97316"       // Orange
-                "Collected" -> "#13ec49" // Green
-                else -> "#94a3b8"        // Gray (Default)
-            }
-            itemStatus.setTextColor(android.graphics.Color.parseColor(statusColor))
+                //Differentiate by Color
+                val isFinished = report.status == "Collected"
+                val statusColor = if (isFinished) "#13ec49" else "#2b7fff"//Green for finished,Blue for New
+                statusStripe.setBackgroundColor(statusColor.toColorInt())
 
-            // Decode Base64 string to Bitmap for the thumbnail
-            report.photoURL?.let { base64String ->
-                val cleanBase64 = if (base64String.contains(",")) {
-                    base64String.split(",")[1] // Remove the "data:image/jpeg;base64," prefix
+                // Hide/Show Collect Button
+                if (isFinished) {
+                    btnAction.visibility = android.view.View.VISIBLE
+                    btnAction.text = R.string.collected.toString()
+                    btnAction.isEnabled = false
+                    btnAction.setTextColor("#94a3b8".toColorInt())
                 } else {
-                    base64String
+                    btnAction.visibility = android.view.View.VISIBLE
+                    btnAction.setOnClickListener { onCollectClicked(report) }
                 }
 
-                try {
-                    val imageBytes = Base64.decode(cleanBase64, Base64.DEFAULT)
-                    val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-                    reportThumbnail.setImageBitmap(decodedImage)
-                } catch (e: Exception) {
-                    reportThumbnail.setImageResource(R.drawable.ic_add_circle) // Fallback icon
-                }
+                decodeImage(report.photoURL, ivReportImg)
             }
+        } else if (holder is ReporterViewHolder) {
+            holder.binding.apply {
+                itemCategory.text = report.category
+                itemID.text = "Report #${report.reportNumber}"
+                itemStatus.text = report.status
+                decodeImage(report.photoURL, reportThumbnail)
+            }
+        }
+    }
+
+    private fun decodeImage(base64: String?, imageView: android.widget.ImageView) {
+        base64?.let {
+            val clean = if (it.contains(",")) it.split(",")[1] else it
+            try {
+                val bytes = Base64.decode(clean, Base64.DEFAULT)
+                imageView.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0,
+                    bytes.size))
+            } catch (_: Exception) { imageView.setImageResource(R.drawable.ic_help_outline) }
         }
     }
 
