@@ -21,7 +21,8 @@ class ReportsFragment : Fragment() {
     private val userId = FirebaseAuth.getInstance().currentUser?.uid
     private var reportsListener: ListenerRegistration? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState:
+    Bundle?): View {
         _binding = FragmentReportsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -29,9 +30,9 @@ class ReportsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        reportsAdapter = ReportsAdapter(emptyList())
+        reportsAdapter = ReportsAdapter(emptyList(), false){  }
 
-        // 2. Setup RecyclerView
+        //RecyclerView
         binding.reportsRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = reportsAdapter
@@ -55,10 +56,22 @@ class ReportsFragment : Fragment() {
                 if (_binding == null || !isAdded) return@addSnapshotListener
 
                 binding.swipeRefreshLayout.isRefreshing = false
-                if (error != null) return@addSnapshotListener
 
-                val reportsList = value?.toObjects(Report::class.java) ?: emptyList()
+                if (error != null) {
+                    // Log the error so you can see if the Index is still building
+                    android.util.Log.e("FirestoreError", "Error fetching reports",
+                        error)
+                    return@addSnapshotListener
+                }
 
+                //Manually map the Document ID to the Report object
+                val reportsList = value?.documents?.mapNotNull { doc ->
+                    val report = doc.toObject(Report::class.java)
+                    report?.id = doc.id // This fills the @Exclude var id in your Data Class
+                    report
+                } ?: emptyList()
+
+                //UI UPDATE LOGIC
                 if (reportsList.isEmpty()) {
                     binding.emptyStateText.visibility = View.VISIBLE
                     binding.reportsRecyclerView.visibility = View.GONE
